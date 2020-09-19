@@ -31,7 +31,7 @@ function drawSquare(int x, int y, String color) {
     ctx.fillRect(x, y, SQUARE_SIZE, SQUARE_SIZE);
 }*/
 
-var canvas, ctx, x, last, timer, row, col, bottom;
+var canvas, ctx, x, last, timer, row, col;
 
 $(document).ready(function() {
     canvas = document.getElementById('canvas');
@@ -47,11 +47,12 @@ $(document).ready(function() {
 
 
 function draw(timestamp) {
-       
+    
+    
     requestAnimationFrame(draw);
     
     timer += timestamp - last;
-    if(timer >= 1000) {
+    if(timer >= 1000 && row < 25) {
         timer = 0;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.beginPath();
