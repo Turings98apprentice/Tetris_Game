@@ -5,6 +5,7 @@ body {
 #page {
     width: 650px;
     background-color: lightgray;
+    margin: auto;
 }
 
 #header {
