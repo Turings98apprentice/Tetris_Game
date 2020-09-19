@@ -1,18 +1,50 @@
 body {
-  font-family: 'Roboto', sans-serif;
+  font-family: monospace;
+    color: white;
+    background-color: black;
 }
 
 #page {
+    margin-left: 50%;
+    /*margin-top: -50px;*/
+}
+
+#content {
+    position: fixed;
+    height: 100%;
     width: 650px;
     background-color: lightgray;
-    margin: auto;
+    margin-left: -325px;
 }
 
 #header {
     text-align: center;
-    margin: 20px;
 }
 
 canvas {
-    border:3px solid black;
+    border:3px solid white;
+    border-radius: 10px;
+    margin-left: 50px;
+    margin-bottom: 50px;
+    background-color: rgba(0,0,0,0.6);
+}
+
+#game-info {
+    float: right;
+    margin-right: 50px;
+    border: 3px solid white;
+    border-radius: 10px;
+    width: 200px;
+}
+
+#game-board {
+    display: inline-block;
+}
+
+h1, h2, h3, h4, p {
+    background-color: rgba(0,0,0,0.4);
+}
+
+h1{
+    margin-top: 50px;
 }
