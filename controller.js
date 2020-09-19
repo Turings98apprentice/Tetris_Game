@@ -53,8 +53,8 @@ function draw(timestamp) {
     requestAnimationFrame(draw);
     
     timer += timestamp - last;
-    
-  if(row<25){    
+       
+  if((row<25) && (checkfull() == false)){
     if(timer >= 500) {
         timer = 0;
         drawBlocks();
@@ -76,6 +76,26 @@ function draw(timestamp) {
     x += (timestamp - last) / 10;
     last = timestamp; 
 }
+
+function checkfull(){                   //loop through every block
+    for(var k=0;k<deadBlocks.length;k++){
+        if (deadBlocks[k].x == col){        //if there is a block in current col
+            if (deadBlocks[k].y == row + 1){    //and a block in the next row
+                console.log ("test true");
+                return true;         //true = there is something directly below the falling block
+            }
+            else {
+                return false;       //false= path is clear
+                console.log ("test false");
+            }
+        }
+        else {
+            console.log ("test false");
+            return false; //nothing below
+        }
+    }
+}
+
 function drawBlocks(){
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.beginPath();
