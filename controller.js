@@ -1,4 +1,11 @@
-var canvas, ctx, x, last, timer, row, col, deadBlocks, currentrow, currentcol;
+var canvas, ctx, x, last, timer, row, col, deadBlocks, currentrow, currentcol, T_shape;
+
+T_shape = [
+    {x:0, y:0}, //   000
+    {x:1, y:0}, //    0 
+    {x:2, y:0},
+    {x:1, y:1}
+];
 
 $(document).ready(function() {
   canvas = document.getElementById('canvas');
@@ -19,13 +26,14 @@ function draw(timestamp) {
   requestAnimationFrame(draw);
   timer += timestamp - last;   
   
-  if((row<25) && (checkfull() == false)){
+  if((row<25) && (checkShape(col, row, T_shape) == false)){
     if(timer >= 200) {
       timer = 0;
       drawBlocks();
       row++;
     } 
   } else{
+      
     deadBlocks.push({x:col, y:row-1});
     console.log(deadBlocks);
     x = 0;
@@ -39,12 +47,21 @@ function draw(timestamp) {
 
 }
 
-function checkfull(){                   //loop through every block
+function checkShape(c, r, shape) {
+    for(var i=0; i<shape.length; i++) {
+        if(checkfull(shape[i].x + c, shape[i].y + r) == false) {
+            return false;
+        }
+    }
+    return true;
+}
+
+function checkfull(c, r){                   //loop through every block
   for(var k=0; k<deadBlocks.length; k++){
     // console.log("deadblock row = " + deadBlocks[k].y);
     // console.log("deadblock column = " + deadBlocks[k].x);
-    if (deadBlocks[k].x == col){        //if there is a block in current col
-      if (deadBlocks[k].y == row){    //and a block in the next row
+    if (deadBlocks[k].x == c){        //if there is a block in current col
+      if (deadBlocks[k].y == r){    //and a block in the next row
         return true;         //true = there is something directly below the falling block
       } 
     }
@@ -81,8 +98,12 @@ function checkfullRight(){                   //loop through every block
 function drawBlocks(){
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.beginPath();
-  ctx.fillStyle = "#00ff00";
-  ctx.fillRect(col * 20, row * 20, 20, 20);
+    
+    for(var i=0; i<T_shape.length; i++) {
+        ctx.fillStyle = "#00ff00";
+        ctx.fillRect((T_shape[i].x + col) * 20, (T_shape[i].y + row) * 20, 20, 20);
+    }
+
   //ctx.fill(); 
   
   for(var k=0;k<deadBlocks.length;k++){
