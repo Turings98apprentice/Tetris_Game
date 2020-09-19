@@ -1,5 +1,12 @@
 var canvas, ctx, x, last, timer, row, col, deadBlocks, currentrow, currentcol, speed;
 
+square_shape = [
+    {x:0, y:0},
+    {x:1, y:0}, //  00
+    {x:0, y:-1}, //  00
+    {x:1, y:-1}
+];
+
 $(document).ready(function() {
   canvas = document.getElementById('canvas');
   ctx = canvas.getContext('2d');
@@ -20,7 +27,7 @@ function draw(timestamp) {
   requestAnimationFrame(draw);
   timer += timestamp - last;   
   
-  if((row<25) && (checkfull() == false)){
+  if((row<25) && (checkShape(col, row, square_shape) == false)){
     if(timer >= speed) {
       timer = 0;
       drawBlocks();
@@ -41,17 +48,23 @@ function draw(timestamp) {
 
 }
 
-function checkfull(){                   //loop through every block
+function checkfull(c, r){                   //loop through every block
   for(var k=0; k<deadBlocks.length; k++){
-    // console.log("deadblock row = " + deadBlocks[k].y);
-    // console.log("deadblock column = " + deadBlocks[k].x);
-    if (deadBlocks[k].x == col){        //if there is a block in current col
-      if (deadBlocks[k].y == row){    //and a block in the next row
+    if (deadBlocks[k].x == c){        //if there is a block in current col
+      if (deadBlocks[k].y == r){    //and a block in the next row
         return true;         //true = there is something directly below the falling block
       } 
     }
   }
   return false; //nothing below
+}
+
+function checkShape(c, r, shape){
+    for (var k=0; k<shape.length; k++){ //loop through each block in shape
+        if (checkfull(c, r) == false) //check if there's a square below
+            return false;
+    }
+    return true;
 }
 
 function checkfullLeft(){                   //loop through every block
@@ -84,8 +97,9 @@ function drawBlocks(){
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.beginPath();
   ctx.fillStyle = "#00ff00";
-  ctx.fillRect(col * 20, row * 20, 20, 20);
-  //ctx.fill(); 
+    for (var i=0; i<square_shape.length; i++){
+        ctx.fillRect((square_shape[i].x + col) * 20, (square_shape[i].y + row) * 20, 20, 20);
+    }
   
   for(var k=0;k<deadBlocks.length;k++){
     //ctx.beginPath();
