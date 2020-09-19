@@ -27,14 +27,19 @@ function draw(timestamp) {
   requestAnimationFrame(draw);
   timer += timestamp - last;   
   
-  if((row<25) && (checkShape(col, row, square_shape) == false)){
+  if((row<25) && (checkShape(col, row, square_shape) == false) && (checkShape(col + 1, row, square_shape) == false)) {
     if(timer >= speed) {
       timer = 0;
       drawBlocks();
       row++;
     } 
-  } else{
-    deadBlocks.push({x:col, y:row-1});
+  }
+    
+  else{
+    for (var i=0; i<square_shape.length; i++){
+        deadBlocks.push({x:square_shape[i].x + col, y:square_shape[i].y + row-1});
+    }
+      
     console.log(deadBlocks);
     x = 0;
     timer = 0;
@@ -61,13 +66,13 @@ function checkfull(c, r){                   //loop through every block
 
 function checkShape(c, r, shape){
     for (var k=0; k<shape.length; k++){ //loop through each block in shape
-        if (checkfull(c, r) == false) //check if there's a square below
-            return false;
+        if (checkfull(c, r) == true) //check if there's a square below
+            return true;
     }
-    return true;
+    return false;
 }
 
-function checkfullLeft(){                   //loop through every block
+function checkfullLeft(){                   
   for(var k=0; k<deadBlocks.length; k++){
     // console.log("deadblock row = " + deadBlocks[k].y);
     // console.log("deadblock column = " + deadBlocks[k].x);
@@ -80,7 +85,7 @@ function checkfullLeft(){                   //loop through every block
   return false; //nothing below
 }
 
-function checkfullRight(){                   //loop through every block
+function checkfullRight(){                 
   for(var k=0; k<deadBlocks.length; k++){
     // console.log("deadblock row = " + deadBlocks[k].y);
     // console.log("deadblock column = " + deadBlocks[k].x);
@@ -142,7 +147,7 @@ window.addEventListener("keydown", function (event) {
     return; // Quit when this doesn't handle the key event.
   }
 
-    document.body.onkeyup = function(e){
+    document.body.onkeyup = function(e){ //spacebar
     if(e.keyCode == 32){
         speed = 500;
     }
