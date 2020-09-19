@@ -52,19 +52,20 @@ function draw(timestamp) {
     requestAnimationFrame(draw);
     
     timer += timestamp - last;
-    if(timer >= 1000 && row < 25) {
+    
+  if(row<25){    
+    if(timer >= 1000) {
         timer = 0;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.beginPath();
         ctx.rect(col * 20, row++ * 20, 20, 20);
         ctx.fillStyle = "#00ff00";
-        ctx.fill();
-        
-    }
-    
+        ctx.fill();  
+    } 
+  }
+   
     x += (timestamp - last) / 10;
-    last = timestamp;
-    
+    last = timestamp; 
 }
 
 window.addEventListener("keydown", function (event) {
@@ -81,7 +82,7 @@ window.addEventListener("keydown", function (event) {
       break;
     case "ArrowLeft":
       // code for "left arrow" key press.
-        if(col > 0){  
+        if(col > 0 && row<25){  
         col--;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.beginPath();
@@ -92,7 +93,7 @@ window.addEventListener("keydown", function (event) {
       break;
     case "ArrowRight":
       // code for "right arrow" key press.
-        if(col < 14){
+        if(col < 14 && row<25){
         col++;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.beginPath();
