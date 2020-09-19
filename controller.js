@@ -85,12 +85,20 @@ function checkfullLeft(){
   return false; //nothing below
 }
 
-function checkfullRight(){                 
+function checkShapeRight(c,r,shape){
+    for (var k=0; k<shape.length; k++){ //loop through each block in shape
+        if (checkfullRight(c, r) == true) //check if there's a square below
+            return true;
+    }
+    return false;
+}
+
+function checkfullRight(c,r){                 
   for(var k=0; k<deadBlocks.length; k++){
     // console.log("deadblock row = " + deadBlocks[k].y);
     // console.log("deadblock column = " + deadBlocks[k].x);
-    if (deadBlocks[k].y == row){        
-      if (deadBlocks[k].x == col+1){    
+    if (deadBlocks[k].y == r){        
+      if (deadBlocks[k].x == c+1){    
         return true;         
       } 
     }
@@ -138,7 +146,7 @@ window.addEventListener("keydown", function (event) {
     break;
   case "ArrowRight":
     // code for "right arrow" key press.
-    if(col < 14 && row<25 && checkfullRight() == false){
+    if(col < 14 && row<25 && checkShapeRight(col+1,row, square_shape) == false){
       col++;
       drawBlocks();
     }
