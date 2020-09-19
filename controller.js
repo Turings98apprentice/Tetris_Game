@@ -31,7 +31,7 @@ function drawSquare(int x, int y, String color) {
     ctx.fillRect(x, y, SQUARE_SIZE, SQUARE_SIZE);
 }*/
 
-var canvas, ctx, x, last, timer, row, col;
+var canvas, ctx, x, last, timer, row, col, deadBlocks;
 
 $(document).ready(function() {
     canvas = document.getElementById('canvas');
@@ -39,7 +39,8 @@ $(document).ready(function() {
     x = 0;
     timer = 0;
     row = 0;
-    col = 0;
+    col = 7;
+    deadBlocks = [];
     last = performance.now();
     requestAnimationFrame(draw);
 });
@@ -54,19 +55,42 @@ function draw(timestamp) {
     timer += timestamp - last;
     
   if(row<25){    
-    if(timer >= 1000) {
+    if(timer >= 500) {
         timer = 0;
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.beginPath();
-        ctx.rect(col * 20, row++ * 20, 20, 20);
-        ctx.fillStyle = "#00ff00";
-        ctx.fill();  
+        drawBlocks();
+        row++;
     } 
+  }
+  else{
+      
+    deadBlocks.push({x:col, y:row-1}); 
+    console.log(deadBlocks[0]);
+      
+    x = 0;
+    timer = 0;
+    row = 0;
+    col = 7;
+      
   }
    
     x += (timestamp - last) / 10;
     last = timestamp; 
 }
+function drawBlocks(){
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.beginPath();
+        ctx.fillStyle = "#00ff00";
+        ctx.fillRect(col * 20, row * 20, 20, 20);
+        //ctx.fill(); 
+        
+        for(var k=0;k<deadBlocks.length;k++){
+            //ctx.beginPath();
+            ctx.fillStyle = "#00ff00";
+            ctx.fillRect(deadBlocks[k].x * 20, deadBlocks[k].y * 20, 20, 20);
+            console.log(deadBlocks[k].y);
+        }
+}
+
 
 window.addEventListener("keydown", function (event) {
   if (event.defaultPrevented) {
@@ -84,22 +108,14 @@ window.addEventListener("keydown", function (event) {
       // code for "left arrow" key press.
         if(col > 0 && row<25){  
         col--;
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.beginPath();
-        ctx.rect(col * 20, row * 20, 20, 20);
-        ctx.fillStyle = "#00ff00";
-        ctx.fill();
+        drawBlocks();
         }
       break;
     case "ArrowRight":
       // code for "right arrow" key press.
         if(col < 14 && row<25){
         col++;
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.beginPath();
-        ctx.rect(col * 20, row * 20, 20, 20);
-        ctx.fillStyle = "#00ff00";
-        ctx.fill();
+        drawBlocks();
         }
       break;
       default:
