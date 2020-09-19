@@ -20,7 +20,7 @@ function draw(timestamp) {
   timer += timestamp - last;   
   
   if((row<25) && (checkfull() == false)){
-    if(timer >= 500) {
+    if(timer >= 200) {
       timer = 0;
       drawBlocks();
       row++;
@@ -46,6 +46,32 @@ function checkfull(){                   //loop through every block
     if (deadBlocks[k].x == col){        //if there is a block in current col
       if (deadBlocks[k].y == row){    //and a block in the next row
         return true;         //true = there is something directly below the falling block
+      } 
+    }
+  }
+  return false; //nothing below
+}
+
+function checkfullLeft(){                   //loop through every block
+  for(var k=0; k<deadBlocks.length; k++){
+    // console.log("deadblock row = " + deadBlocks[k].y);
+    // console.log("deadblock column = " + deadBlocks[k].x);
+    if (deadBlocks[k].y == row){        
+      if (deadBlocks[k].x == col-1){    
+        return true;         
+      } 
+    }
+  }
+  return false; //nothing below
+}
+
+function checkfullRight(){                   //loop through every block
+  for(var k=0; k<deadBlocks.length; k++){
+    // console.log("deadblock row = " + deadBlocks[k].y);
+    // console.log("deadblock column = " + deadBlocks[k].x);
+    if (deadBlocks[k].y == row){        
+      if (deadBlocks[k].x == col+1){    
+        return true;         
       } 
     }
   }
@@ -81,14 +107,14 @@ window.addEventListener("keydown", function (event) {
     break;
   case "ArrowLeft":
     // code for "left arrow" key press.
-    if(col > 0 && row<25){  
+    if(col > 0 && row<25 && checkfullLeft() == false){  
       col--;
       drawBlocks();
     }
     break;
   case "ArrowRight":
     // code for "right arrow" key press.
-    if(col < 14 && row<25){
+    if(col < 14 && row<25 && checkfullRight() == false){
       col++;
       drawBlocks();
     }
