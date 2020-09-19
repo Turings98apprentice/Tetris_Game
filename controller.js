@@ -31,14 +31,14 @@ function drawSquare(int x, int y, String color) {
     ctx.fillRect(x, y, SQUARE_SIZE, SQUARE_SIZE);
 }*/
 
-var canvas, ctx, x, last, timer, row, col, deadBlocks;
+var canvas, ctx, x, last, timer, row, col, deadBlocks, currentrow, currentcol;
 
 $(document).ready(function() {
     canvas = document.getElementById('canvas');
     ctx = canvas.getContext('2d');
     x = 0;
     timer = 0;
-    row = 0;
+    row = 15;
     col = 7;
     deadBlocks = [];
     last = performance.now();
@@ -55,6 +55,7 @@ function draw(timestamp) {
     timer += timestamp - last;
        
   if((row<25) && (checkfull() == false)){
+      //console.log("checkfull false");
     if(timer >= 500) {
         timer = 0;
         drawBlocks();
@@ -62,9 +63,7 @@ function draw(timestamp) {
     } 
   }
   else{
-      
-    deadBlocks.push({x:col, y:row-1}); 
-    console.log(deadBlocks[0]);
+    deadBlocks.push({x:col, y:row-1});
       
     x = 0;
     timer = 0;
@@ -79,18 +78,20 @@ function draw(timestamp) {
 
 function checkfull(){                   //loop through every block
     for(var k=0;k<deadBlocks.length;k++){
+        console.log("deadblock row = " + deadBlocks[k].y);
+        console.log("deadblock column = " + deadBlocks[k].x);
         if (deadBlocks[k].x == col){        //if there is a block in current col
-            if (deadBlocks[k].y == row + 1){    //and a block in the next row
-                console.log ("test true");
+            if (deadBlocks[k].y == row){    //and a block in the next row
+                //console.log ("test true");
                 return true;         //true = there is something directly below the falling block
             }
             else {
+                //console.log ("test false 1");
                 return false;       //false= path is clear
-                console.log ("test false");
-            }
+                }
         }
         else {
-            console.log ("test false");
+            //console.log ("test false 2");
             return false; //nothing below
         }
     }
@@ -107,7 +108,6 @@ function drawBlocks(){
             //ctx.beginPath();
             ctx.fillStyle = "#00ff00";
             ctx.fillRect(deadBlocks[k].x * 20, deadBlocks[k].y * 20, 20, 20);
-            console.log(deadBlocks[k].y);
         }
 }
 
