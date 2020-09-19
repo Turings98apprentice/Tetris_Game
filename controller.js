@@ -1,4 +1,4 @@
-var canvas, ctx, x, last, timer, row, col, deadBlocks, currentrow, currentcol;
+var canvas, ctx, x, last, timer, row, col, deadBlocks, currentrow, currentcol, speed;
 
 $(document).ready(function() {
   canvas = document.getElementById('canvas');
@@ -7,6 +7,7 @@ $(document).ready(function() {
   timer = 0;
   row = 0;
   col = 7;
+  speed = 500;
   deadBlocks = [];
   last = performance.now();
   requestAnimationFrame(draw);
@@ -20,7 +21,7 @@ function draw(timestamp) {
   timer += timestamp - last;   
   
   if((row<25) && (checkfull() == false)){
-    if(timer >= 200) {
+    if(timer >= speed) {
       timer = 0;
       drawBlocks();
       row++;
@@ -32,6 +33,7 @@ function draw(timestamp) {
     timer = 0;
     row = 0;
     col = 7;
+    speed = 500;  
   }
   
   x += (timestamp - last) / 10;
@@ -101,9 +103,12 @@ window.addEventListener("keydown", function (event) {
   switch (event.key) {
   case "ArrowDown":
     // code for "down arrow" key press.
+        speed -= 499;
+          
     break;
   case "ArrowUp":
     // code for "up arrow" key press.
+        speed = 500;  
     break;
   case "ArrowLeft":
     // code for "left arrow" key press.
@@ -123,6 +128,11 @@ window.addEventListener("keydown", function (event) {
     return; // Quit when this doesn't handle the key event.
   }
 
+    document.body.onkeyup = function(e){
+    if(e.keyCode == 32){
+        speed = 500;
+    }
+}
   // Cancel the default action to avoid it being handled twice
   event.preventDefault();
 }, true);
