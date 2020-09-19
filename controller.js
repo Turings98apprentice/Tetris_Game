@@ -31,7 +31,7 @@ function drawSquare(int x, int y, String color) {
     ctx.fillRect(x, y, SQUARE_SIZE, SQUARE_SIZE);
 }*/
 
-var canvas, ctx, x, last, timer, row, col;
+var canvas, ctx, x, last, timer, row, col, bottom;
 
 $(document).ready(function() {
     canvas = document.getElementById('canvas');
@@ -47,6 +47,7 @@ $(document).ready(function() {
 
 
 function draw(timestamp) {
+       
     requestAnimationFrame(draw);
     
     timer += timestamp - last;
@@ -57,10 +58,12 @@ function draw(timestamp) {
         ctx.rect(col * 20, row++ * 20, 20, 20);
         ctx.fillStyle = "#00ff00";
         ctx.fill();
+        
     }
     
     x += (timestamp - last) / 10;
     last = timestamp;
+    
 }
 
 window.addEventListener("keydown", function (event) {
@@ -77,21 +80,25 @@ window.addEventListener("keydown", function (event) {
       break;
     case "ArrowLeft":
       // code for "left arrow" key press.
-          col--;
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
+        if(col > 0){  
+        col--;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.beginPath();
         ctx.rect(col * 20, row * 20, 20, 20);
         ctx.fillStyle = "#00ff00";
         ctx.fill();
+        }
       break;
     case "ArrowRight":
       // code for "right arrow" key press.
-          col++;
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
+        if(col < 14){
+        col++;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.beginPath();
         ctx.rect(col * 20, row * 20, 20, 20);
         ctx.fillStyle = "#00ff00";
         ctx.fill();
+        }
       break;
       default:
       return; // Quit when this doesn't handle the key event.
