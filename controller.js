@@ -1,4 +1,4 @@
-var canvas, ctx, x, last, timer, row, col, deadBlocks, currentrow, currentcol, speed, R=0, end=0, highScore=0;
+var canvas, ctx, x, last, timer, row, col, deadBlocks, currentrow, currentcol, speed, R=0, end=0, highScore=0, score=0;
 
 square_shape = [
     {x:0, y:0},
@@ -122,7 +122,7 @@ function draw(timestamp) {
   last = timestamp; 
 }
     else {
-        var score = deadBlocks.length;
+        score = deadBlocks.length;
         if (score > highScore)
             highScore = score;
          console.log(score);
