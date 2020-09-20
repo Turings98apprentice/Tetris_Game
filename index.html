@@ -38,6 +38,14 @@
                         document.getElementById("score").innerHTML = score;
                         canvas.clear;
                         deadBlocks = [];
+                        x = 0;
+                        timer = 0;
+                        row = 0;
+                        col = 7;
+                        speed = 500; 
+                        end = 0;
+                        R = Math.floor((Math.random()*3));
+                        ctx.clearRect(0, 0, canvas.width, canvas.height);
                     }
                 </script>
                 
