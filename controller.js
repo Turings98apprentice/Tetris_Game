@@ -61,6 +61,8 @@ function draw(timestamp) {
             else{
                 for (var i=0; i<square_shape.length; i++){
                 deadBlocks.push({x:square_shape[i].x + col, y:square_shape[i].y + row-1});
+                    score=deadBlocks.length;
+                    document.getElementById("score").innerHTML = score;
                 }
                 x = 0;
                 timer = 0;
@@ -86,6 +88,8 @@ function draw(timestamp) {
             else{
                 for (var i=0; i<line_shape.length; i++){
                 deadBlocks.push({x:line_shape[i].x + col, y:line_shape[i].y + row-1});
+                    score=deadBlocks.length;
+                    document.getElementById("score").innerHTML = score;
                 }
                 x = 0;
                 timer = 0;
@@ -111,6 +115,8 @@ function draw(timestamp) {
             else{
                 for (var i=0; i<t_shape.length; i++){
                 deadBlocks.push({x:t_shape[i].x + col, y:t_shape[i].y + row-1});
+                    score=deadBlocks.length;
+                    document.getElementById("score").innerHTML = score;
                 }
                 x = 0;
                 timer = 0;
@@ -133,8 +139,17 @@ function draw(timestamp) {
         score = deadBlocks.length;
         if (score > highScore)
             highScore = score;
+        document.getElementById("score").innerHTML = score;
+        document.getElementById("high score").innerHTML = highScore;
          console.log(score);
     }
+}
+
+function Reset() {
+     score = 0;
+    document.getElementById("score").innerHTML = score;
+    canvas.clear;
+    deadBlocks = [];
 }
 
 function checkfull(c, r){                   //loop through every block
