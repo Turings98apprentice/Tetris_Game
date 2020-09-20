@@ -22,6 +22,9 @@ t_shape = [
 shapes = [
     square_shape, line_shape, t_shape
 ];
+colors = [
+  "#0CF742", "#13E000", "#76F70C", "#76F70C"
+]
 
 
 $(document).ready(function() {
@@ -36,6 +39,11 @@ $(document).ready(function() {
   last = performance.now();
   requestAnimationFrame(draw);
 });
+
+function randomColor(){
+  rc = Math.floor((Math.random()*4));
+  return colors[rc];
+}
 
 
 function draw(timestamp) {
@@ -158,8 +166,6 @@ function checkshapeLeft(c, r, shape){
 
 function checkfullLeft(c, r){                   
   for(var k=0; k<deadBlocks.length; k++){
-    // console.log("deadblock row = " + deadBlocks[k].y);
-    // console.log("deadblock column = " + deadBlocks[k].x);
     if (deadBlocks[k].y == r){        
       if (deadBlocks[k].x == c-1){    
         return true;         
@@ -179,8 +185,6 @@ function checkShapeRight(c,r,shape){
 
 function checkfullRight(c,r){                 
   for(var k=0; k<deadBlocks.length; k++){
-    // console.log("deadblock row = " + deadBlocks[k].y);
-    // console.log("deadblock column = " + deadBlocks[k].x);
     if (deadBlocks[k].y == r){        
       if (deadBlocks[k].x == c+1){    
         return true;         
@@ -193,7 +197,7 @@ function checkfullRight(c,r){
 function drawBlocks(){
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.beginPath();
-  ctx.fillStyle = "#ffffff";
+  ctx.fillStyle = randomColor();
     if (shapes[R] == square_shape){
          for (var i=0; i<square_shape.length; i++){
         ctx.fillRect((square_shape[i].x + col) * 20, (square_shape[i].y + row) * 20, 20, 20);
@@ -211,8 +215,7 @@ function drawBlocks(){
     }
   
   for(var k=0;k<deadBlocks.length;k++){
-    //ctx.beginPath();
-    ctx.fillStyle = "#ffffff";
+    ctx.fillStyle = randomColor();
     ctx.fillRect(deadBlocks[k].x * 20, deadBlocks[k].y * 20, 20, 20);
   }
 }
