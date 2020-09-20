@@ -10,7 +10,7 @@ t_shape = [
     {x:0, y:0},
     {x:1, y:0},
     {x:2, y:0},
-    {x:1, y:1}
+    {x:1, y:-1}
 ];
  line_shape = [
     {x:0, y:-3},
@@ -58,7 +58,7 @@ function draw(timestamp) {
                 row = 0;
                 col = 7;
                 speed = 500; 
-                R = Math.floor((Math.random()*2));
+                R = Math.floor((Math.random()*3));
             }
         }
           if (shapes[R] == line_shape){
@@ -78,10 +78,29 @@ function draw(timestamp) {
                 row = 0;
                 col = 7;
                 speed = 500; 
-                R = Math.floor((Math.random()*2));
+                R = Math.floor((Math.random()*3));
             }
             }
-  
+        if (shapes[R] == t_shape){
+            if((row<25) && (checkShape(col, row, t_shape) == false) && (checkShape(col +1, row, t_shape) == false) && (checkShape(col +2, row, t_shape) == false)) {
+               if(timer >= speed) {
+                 timer = 0;
+                 drawBlocks();
+                 row++;
+               } 
+            }
+            else{
+                for (var i=0; i<t_shape.length; i++){
+                deadBlocks.push({x:t_shape[i].x + col, y:t_shape[i].y + row-1});
+                }
+                x = 0;
+                timer = 0;
+                row = 0;
+                col = 7;
+                speed = 500; 
+                R = Math.floor((Math.random()*3));
+            }
+        }
     
   x += (timestamp - last) / 10;
   last = timestamp; 
@@ -162,6 +181,11 @@ function drawBlocks(){
         ctx.fillRect((line_shape[i].x + col) * 20, (line_shape[i].y + row) * 20, 20, 20);
         }
     }
+    if (shapes[R] == t_shape){
+         for (var i=0; i<t_shape.length; i++){
+        ctx.fillRect((t_shape[i].x + col) * 20, (t_shape[i].y + row) * 20, 20, 20);
+        }
+    }
   
   for(var k=0;k<deadBlocks.length;k++){
     //ctx.beginPath();
@@ -195,10 +219,25 @@ window.addEventListener("keydown", function (event) {
     break;
   case "ArrowRight":
     // code for "right arrow" key press.
-    if(col < 14 && row<25 && checkShapeRight(col+1,row, square_shape) == false){
-      col++;
-      drawBlocks();
+    if (shapes[R] == square_shape){
+        if(col < 13 && row<25 && checkShapeRight(col+1,row, square_shape) == false && checkShapeRight(col,row, square_shape) == false){
+        col++;
+        drawBlocks();
     }
+    }
+    if (shapes[R] == line_shape){
+        if((col < 14 && row<25 && checkShapeRight(col,row, line_shape) == false) && (checkShapeRight(col,row-1, line_shape) == false) && (checkShapeRight(col,row-2, line_shape) == false) && (checkShapeRight(col,row-3, line_shape) == false)){
+        col++;
+        drawBlocks();
+    }
+    }
+    if (shapes[R] == t_shape){
+        if(col < 12 && row<25 && checkShapeRight(col,row+2, t_shape) == false && checkShapeRight(col+1,row+1, t_shape) == false){
+        col++;
+        drawBlocks();
+    }
+    }
+    
     break;
     default:
     return; // Quit when this doesn't handle the key event.
