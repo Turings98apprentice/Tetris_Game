@@ -1,4 +1,5 @@
-var canvas, ctx, x, last, timer, row, col, deadBlocks, currentrow, currentcol, speed, R=0, end=0, highScore=0, score=0;
+var canvas, ctx, x, last, timer, row, col, deadBlocks, currentrow, 
+currentcol, speed, R=0, end=0, highScore=0, score=0, reseted = false;
 
 square_shape = [
     {x:0, y:0},
@@ -45,10 +46,25 @@ function randomColor(){
   return colors[rc];
 }
 
+function Reset() {
+  score = 0;
+  document.getElementById("score").innerHTML = score;
+  canvas.clear;
+  deadBlocks = [];
+  x = 0;
+  timer = 0;
+  row = 0;
+  col = 7;
+  speed = 500; 
+  end = 0;
+  console.log(timestamp);
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
 
 function draw(timestamp) {
+  requestAnimationFrame(draw);
     if (end == 0){
-    requestAnimationFrame(draw);
+    
     timer += timestamp - last;
         if (shapes[R] == square_shape){
             if((row<25) && (checkShape(col, row, square_shape) == false) && (checkShape(col + 1, row, square_shape) == false)) {
@@ -142,20 +158,6 @@ function draw(timestamp) {
         document.getElementById("score").innerHTML = score;
         document.getElementById("high score").innerHTML = highScore;
     }
-}
-
-function Reset() {
-    score = 0;
-    document.getElementById("score").innerHTML = score;
-    canvas.clear;
-    deadBlocks = [];
-    x = 0;
-    timer = 0;
-    row = 0;
-    col = 7;
-    speed = 500; 
-    end = 0;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
 
 function checkfull(c, r){                   //loop through every block
