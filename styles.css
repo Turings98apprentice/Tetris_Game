@@ -26,15 +26,20 @@ canvas {
     border-radius: 10px;
     margin-left: 50px;
     margin-bottom: 50px;
+    margin-top: 30px;
     background-color: rgba(0,0,0,0.6);
 }
 
 #game-info {
     float: right;
+    margin-top: 30px;
     margin-right: 50px;
+    padding: 10px;
     border: 3px solid white;
     border-radius: 10px;
     width: 200px;
+    height: 480px;
+    background-color: rgba(0,0,0,0.4);
 }
 
 #game-board {

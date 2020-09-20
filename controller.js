@@ -1,4 +1,4 @@
-var canvas, ctx, x, last, timer, row, col, deadBlocks, currentrow, currentcol, speed, R=0;
+var canvas, ctx, x, last, timer, row, col, deadBlocks, currentrow, currentcol, speed, R=0, end=0, highScore=0;
 
 square_shape = [
     {x:0, y:0},
@@ -39,8 +39,9 @@ $(document).ready(function() {
 
 
 function draw(timestamp) {
+    if (end == 0){
     requestAnimationFrame(draw);
-    timer += timestamp - last; 
+    timer += timestamp - last;
         if (shapes[R] == square_shape){
             if((row<25) && (checkShape(col, row, square_shape) == false) && (checkShape(col + 1, row, square_shape) == false)) {
                if(timer >= speed) {
@@ -59,6 +60,11 @@ function draw(timestamp) {
                 col = 7;
                 speed = 500; 
                 R = Math.floor((Math.random()*3));
+                for (var v=0; v<deadBlocks.length; v++){
+                    if (deadBlocks[v].y == -1){
+                    end = 1;
+                    }
+                }
             }
         }
           if (shapes[R] == line_shape){
@@ -79,6 +85,11 @@ function draw(timestamp) {
                 col = 7;
                 speed = 500; 
                 R = Math.floor((Math.random()*3));
+                for (var v=0; v<deadBlocks.length; v++){
+                    if (deadBlocks[v].y == -1){
+                    end = 1;
+                    }
+                }
             }
             }
         if (shapes[R] == t_shape){
@@ -99,11 +110,23 @@ function draw(timestamp) {
                 col = 7;
                 speed = 500; 
                 R = Math.floor((Math.random()*3));
+                for (var v=0; v<deadBlocks.length; v++){
+                    if (deadBlocks[v].y == -1){
+                    end = 1;
+                    }
+                }
             }
         }
     
   x += (timestamp - last) / 10;
   last = timestamp; 
+}
+    else {
+        var score = deadBlocks.length;
+        if (score > highScore)
+            highScore = score;
+         console.log(score);
+    }
 }
 
 function checkfull(c, r){                   //loop through every block
@@ -170,7 +193,7 @@ function checkfullRight(c,r){
 function drawBlocks(){
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.beginPath();
-  ctx.fillStyle = "#00ff00";
+  ctx.fillStyle = "#ffffff";
     if (shapes[R] == square_shape){
          for (var i=0; i<square_shape.length; i++){
         ctx.fillRect((square_shape[i].x + col) * 20, (square_shape[i].y + row) * 20, 20, 20);
@@ -189,7 +212,7 @@ function drawBlocks(){
   
   for(var k=0;k<deadBlocks.length;k++){
     //ctx.beginPath();
-    ctx.fillStyle = "#00ff00";
+    ctx.fillStyle = "#ffffff";
     ctx.fillRect(deadBlocks[k].x * 20, deadBlocks[k].y * 20, 20, 20);
   }
 }
