@@ -141,15 +141,21 @@ function draw(timestamp) {
             highScore = score;
         document.getElementById("score").innerHTML = score;
         document.getElementById("high score").innerHTML = highScore;
-         console.log(score);
     }
 }
 
 function Reset() {
-     score = 0;
+    score = 0;
     document.getElementById("score").innerHTML = score;
     canvas.clear;
     deadBlocks = [];
+    x = 0;
+    timer = 0;
+    row = 0;
+    col = 7;
+    speed = 500; 
+    end = 0;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
 
 function checkfull(c, r){                   //loop through every block
@@ -215,17 +221,17 @@ function drawBlocks(){
   ctx.fillStyle = randomColor();
     if (shapes[R] == square_shape){
          for (var i=0; i<square_shape.length; i++){
-        ctx.fillRect((square_shape[i].x + col) * 20, (square_shape[i].y + row) * 20, 20, 20);
+          ctx.fillRect((square_shape[i].x + col) * 20, (square_shape[i].y + row) * 20, 20, 20);
         }
     }
     if (shapes[R] == line_shape){
         for (var i=0; i<line_shape.length; i++){
-        ctx.fillRect((line_shape[i].x + col) * 20, (line_shape[i].y + row) * 20, 20, 20);
+          ctx.fillRect((line_shape[i].x + col) * 20, (line_shape[i].y + row) * 20, 20, 20);
         }
     }
     if (shapes[R] == t_shape){
          for (var i=0; i<t_shape.length; i++){
-        ctx.fillRect((t_shape[i].x + col) * 20, (t_shape[i].y + row) * 20, 20, 20);
+          ctx.fillRect((t_shape[i].x + col) * 20, (t_shape[i].y + row) * 20, 20, 20);
         }
     }
   
