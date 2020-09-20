@@ -1,11 +1,28 @@
-var canvas, ctx, x, last, timer, row, col, deadBlocks, currentrow, currentcol, speed;
+var canvas, ctx, x, last, timer, row, col, deadBlocks, currentrow, currentcol, speed, R=0;
 
 square_shape = [
     {x:0, y:0},
-    {x:1, y:0}, //  00
-    {x:0, y:-1}, //  00
+    {x:1, y:0},
+    {x:0, y:-1},
     {x:1, y:-1}
 ];
+t_shape = [
+    {x:0, y:0},
+    {x:1, y:0},
+    {x:2, y:0},
+    {x:1, y:1}
+];
+ line_shape = [
+    {x:0, y:-3},
+    {x:0, y:-2},
+    {x:0, y:-1},
+    {x:0, y:0}
+];
+
+shapes = [
+    square_shape, line_shape, t_shape
+];
+
 
 $(document).ready(function() {
   canvas = document.getElementById('canvas');
@@ -21,36 +38,53 @@ $(document).ready(function() {
 });
 
 
-
 function draw(timestamp) {
-
-  requestAnimationFrame(draw);
-  timer += timestamp - last;   
+    requestAnimationFrame(draw);
+    timer += timestamp - last; 
+        if (shapes[R] == square_shape){
+            if((row<25) && (checkShape(col, row, square_shape) == false) && (checkShape(col + 1, row, square_shape) == false)) {
+               if(timer >= speed) {
+                 timer = 0;
+                 drawBlocks();
+                 row++;
+               } 
+            }
+            else{
+                for (var i=0; i<square_shape.length; i++){
+                deadBlocks.push({x:square_shape[i].x + col, y:square_shape[i].y + row-1});
+                }
+                x = 0;
+                timer = 0;
+                row = 0;
+                col = 7;
+                speed = 500; 
+                R = Math.floor((Math.random()*2));
+            }
+        }
+          if (shapes[R] == line_shape){
+            if((row<25) && (checkShape(col, row, line_shape) == false)) {
+               if(timer >= speed) {
+                 timer = 0;
+                 drawBlocks();
+                 row++;
+               } 
+            }
+            else{
+                for (var i=0; i<line_shape.length; i++){
+                deadBlocks.push({x:line_shape[i].x + col, y:line_shape[i].y + row-1});
+                }
+                x = 0;
+                timer = 0;
+                row = 0;
+                col = 7;
+                speed = 500; 
+                R = Math.floor((Math.random()*2));
+            }
+            }
   
-  if((row<25) && (checkShape(col, row, square_shape) == false) && (checkShape(col + 1, row, square_shape) == false)) {
-    if(timer >= speed) {
-      timer = 0;
-      drawBlocks();
-      row++;
-    } 
-  }
     
-  else{
-    for (var i=0; i<square_shape.length; i++){
-        deadBlocks.push({x:square_shape[i].x + col, y:square_shape[i].y + row-1});
-    }
-      
-    console.log(deadBlocks);
-    x = 0;
-    timer = 0;
-    row = 0;
-    col = 7;
-    speed = 500;  
-  }
-  
   x += (timestamp - last) / 10;
   last = timestamp; 
-
 }
 
 function checkfull(c, r){                   //loop through every block
@@ -72,12 +106,20 @@ function checkShape(c, r, shape){
     return false;
 }
 
-function checkfullLeft(){                   
+function checkshapeLeft(c, r, shape){
+    for(var k=0; k<shape.length; k++){
+        if (checkfullLeft(c,r) == true)
+            return true;
+    }
+    return false;
+}
+
+function checkfullLeft(c, r){                   
   for(var k=0; k<deadBlocks.length; k++){
     // console.log("deadblock row = " + deadBlocks[k].y);
     // console.log("deadblock column = " + deadBlocks[k].x);
-    if (deadBlocks[k].y == row){        
-      if (deadBlocks[k].x == col-1){    
+    if (deadBlocks[k].y == r){        
+      if (deadBlocks[k].x == c-1){    
         return true;         
       } 
     }
@@ -110,8 +152,15 @@ function drawBlocks(){
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.beginPath();
   ctx.fillStyle = "#00ff00";
-    for (var i=0; i<square_shape.length; i++){
+    if (shapes[R] == square_shape){
+         for (var i=0; i<square_shape.length; i++){
         ctx.fillRect((square_shape[i].x + col) * 20, (square_shape[i].y + row) * 20, 20, 20);
+        }
+    }
+    if (shapes[R] == line_shape){
+        for (var i=0; i<line_shape.length; i++){
+        ctx.fillRect((line_shape[i].x + col) * 20, (line_shape[i].y + row) * 20, 20, 20);
+        }
     }
   
   for(var k=0;k<deadBlocks.length;k++){
@@ -139,7 +188,7 @@ window.addEventListener("keydown", function (event) {
     break;
   case "ArrowLeft":
     // code for "left arrow" key press.
-    if(col > 0 && row<25 && checkfullLeft() == false){  
+    if(col > 0 && row<25 && checkfullLeft(col, row) == false){  
       col--;
       drawBlocks();
     }
